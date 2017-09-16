@@ -2,6 +2,7 @@ from aimacode.planning import Action
 from aimacode.search import Problem
 from aimacode.utils import expr
 from lp_utils import decode_state
+from copy import copy
 
 
 class PgNode():
@@ -533,6 +534,16 @@ class PlanningGraph():
         :return: int
         """
         level_sum = 0
-        # TODO: implement
+        # DONE implement
         # for each goal in the problem, determine the level cost, then add them together
+        remaining_goals = self.problem.goal
+        test_goals = copy(self.problem.goal)
+        for i in range(len(self.s_levels)):
+            symbols = [state.symbol for state in self.s_levels[i]]
+            for goal in remaining_goals:
+                if goal in symbols:
+                    level_sum += i
+                    test_goals.remove(goal)
+                    break
+            remaining_goals = copy(test_goals)
         return level_sum
